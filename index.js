@@ -1,7 +1,14 @@
 // Get references to the tbody element, input field and button
 var $tbody = document.querySelector("tbody");
-var $datetimeInput = document.querySelector("#datetime");
+var $datetimeInput = document.querySelector("#searchDate");
+var $cityInput = document.querySelector("#searchCity");
+var $stateInput = document.querySelector("#searchState");
+var $countryInput = document.querySelector("#searchCountry");
+var $shapeInput = document.querySelector("#searchShape");
 var $searchBtn = document.querySelector("#search");
+
+var startingIndex = 0;
+var resultsPerPage = 50;
 
 // Add an event listener to the searchButton, call handleSearchButtonClick when clicked
 $searchBtn.addEventListener("click", handleSearchButtonClick);
@@ -13,6 +20,13 @@ var filteredDataSet = dataSet;
 function renderTable() {
     $tbody.innerHTML = "";
     for (var i = 0; i < filteredDataSet.length; i++) {
+
+        var endingIndex = startingIndex + resultsPerPage;
+        
+        var sightingSubset = dataSet.slice(startingIndex, endingIndex);
+
+        for (var i = 0; i < sightingSubset.length; i++) {
+
         // Get get the current sighting object and its fields
         var sighting = filteredDataSet[i];
         var fields = Object.keys(sighting);
@@ -25,19 +39,36 @@ function renderTable() {
             $cell.innerText = sighting[field];
         }
     }
-}
+}}
 
 function handleSearchButtonClick() {
+
+    startingIndex += resultsPerPage;
+    renderTable();
+     
     // Format the user's search by removing leading and trailing whitespace, lowercase the string
     var filterDateTime = $datetimeInput.value.trim().toLowerCase();
+    var filterCity = $cityInput.value.trim().toLowerCase();
+    var filterState = $stateInput.value.trim().toLowerCase();
+    var filterCountry = $countryInput.value.trim().toLowerCase();
+    var filterShape = $shapeInput.value.trim().toLowerCase();
 
     // Set filteredDataSet to an array of all addresses whose "datetime" matches the filter
     filterDateTime = dataSet.filter(function (sighting) {
         var newDateTime = sighting.datetime.toLowerCase();
-
-        // If true, add the sighting to the filteredDataSet, otherwise don't add it to filteredDataSet
-        return newDateTime === filterDateTime;
-    });
+        var newCity = sighting.city.toLowerCase();
+        var newState = sighting.state.toLowerCase();
+        var newCountry = sighting.country.toLowerCase();
+        var newShape = sighting.shape.toLowerCase();
+        if (newDateTime === filterDateTime && 
+            newCity === filterCity && 
+            newState === filterState &&
+            newCountry === filterCountry &&
+            newShape === filterShape ) {
+                return true;
+            }
+            return false;
+        });
     renderTable();
 }
 

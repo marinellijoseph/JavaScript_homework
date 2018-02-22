@@ -34,6 +34,15 @@ You can handle this... Right? The planet Earth needs to know what we have found!
   4. `country`
   5. `shape`
 
+  <!-- var filter = {address: 'England', name: 'Mark'};
+users = users.filter(function(item) {
+    for(var key in filter) {
+        if(item[key] === undefined || item[key] != filter[key])
+            return false;
+    }
+    return true;
+}); -->
+
 ### Level 3: Paginated Table
 
 * Complete all of Level 2 criteria.
